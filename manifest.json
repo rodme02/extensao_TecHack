@@ -1,0 +1,36 @@
+{
+    "manifest_version": 2,
+    "name": "My Extension",
+    "version": "1.0",
+    "description": "A basic Firefox extension example.",
+    "icons": {
+      "48": "icons/icon.png"
+    },
+    "permissions": [
+      "activeTab",
+      "webRequest",
+      "webRequestBlocking",
+      "cookies",
+      "storage",
+      "<all_urls>"
+    ],
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": "icon.png",
+      "default_title": "Click me!"
+    },
+    "options_ui": {
+      "page": "options.html",
+      "open_in_tab": true
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
