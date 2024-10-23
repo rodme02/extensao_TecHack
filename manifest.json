@@ -1,36 +1,41 @@
 {
     "manifest_version": 2,
-    "name": "My Extension",
+    "name": "Privacy Guardian",
     "version": "1.0",
-    "description": "A basic Firefox extension example.",
-    "icons": {
-      "48": "icons/icon.png"
-    },
+    "description": "Detects privacy threats like third-party connections, cookies, local storage, fingerprinting, and calculates a privacy score.",
     "permissions": [
-      "activeTab",
+      "cookies",
       "webRequest",
       "webRequestBlocking",
-      "cookies",
+      "tabs",
       "storage",
-      "<all_urls>"
+      "http://*/",
+      "https://*/"
     ],
     "background": {
-      "scripts": ["background.js"]
+      "scripts": ["background.js"],
+      "persistent": false
     },
     "browser_action": {
       "default_popup": "popup.html",
-      "default_icon": "icon.png",
-      "default_title": "Click me!"
+      "default_icon": "icon.png"
     },
-    "options_ui": {
-      "page": "options.html",
-      "open_in_tab": true
+    "icons": {
+      "128": "icon.png"
     },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["content.js"]
+        "js": ["content.js"],
+        "run_at": "document_idle"
       }
-    ]
+    ],
+    "web_accessible_resources": [
+      "icon.png"
+    ],
+    "options_ui": {
+      "page": "options.html",
+      "open_in_tab": true
+    }
   }
   

@@ -1,38 +1,48 @@
-// Detect use of local storage and session storage
-let localStorageDetected = localStorage.length > 0;
-let sessionStorageDetected = sessionStorage.length > 0;
+// Canvas Fingerprinting Detection
+function detectCanvasFingerprinting() {
+    const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
+    const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
 
-console.log("Content script loaded: LocalStorage detected:", localStorageDetected, "SessionStorage detected:", sessionStorageDetected);
+    // Override the default toDataURL method
+    HTMLCanvasElement.prototype.toDataURL = function() {
+        chrome.runtime.sendMessage({ action: 'canvasFingerprintingDetected' });
+        return originalToDataURL.apply(this, arguments);
+    };
 
-// Detect dynamic script injection (for hijacking detection)
-const observer = new MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-    if (mutation.addedNodes.length > 0) {
-      mutation.addedNodes.forEach((node) => {
-        if (node.tagName === 'SCRIPT') {
-          browser.runtime.sendMessage({ action: 'hijackingDetected' });
-        }
-      });
+    // Override the default getImageData method
+    CanvasRenderingContext2D.prototype.getImageData = function() {
+        chrome.runtime.sendMessage({ action: 'canvasFingerprintingDetected' });
+        return originalGetImageData.apply(this, arguments);
+    };
+}
+
+// Detect HTML5 Local Storage usage directly from the page (as a backup check)
+function detectLocalStorageUsage() {
+    if (localStorage.length > 0 || sessionStorage.length > 0) {
+        chrome.runtime.sendMessage({ action: 'localStorageUsed', used: true });
     }
-  });
-});
-observer.observe(document.documentElement, { childList: true, subtree: true });
+}
 
-// Override canvas to detect fingerprinting
-HTMLCanvasElement.prototype.toDataURL = (function(originalFn) {
-  return function() {
-    browser.runtime.sendMessage({ action: 'canvasFingerprintDetected' });
-    return originalFn.apply(this, arguments);
-  };
-})(HTMLCanvasElement.prototype.toDataURL);
+// Detect Browser Hijacking by checking for non-standard ports (ports not 80 or 443)
+function detectBrowserHijacking() {
+    // Listen for completed network requests
+    chrome.webRequest.onCompleted.addListener(
+        (details) => {
+            const url = new URL(details.url);
+            const port = url.port || (url.protocol === 'https:' ? '443' : '80');  // Default ports if none specified
 
-// Listen for messages from the popup to send local storage data
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'getLocalStorage') {
-    console.log("Received request for local storage data. Sending response...");
-    sendResponse({
-      localStorageDetected: localStorageDetected,
-      sessionStorageDetected: sessionStorageDetected
-    });
-  }
-});
+            // Check if the port is not 80 (HTTP) or 443 (HTTPS)
+            if (port !== '80' && port !== '443') {
+                console.warn(`Suspicious port detected: ${port} on ${url.hostname}`);
+                chrome.runtime.sendMessage({ action: 'hijackingDetected', reason: `Non-standard port: ${port}` });
+            }
+        },
+        { urls: ["<all_urls>"] }  // Capture requests to all URLs
+    );
+}
+
+
+// Execute detection functions
+detectCanvasFingerprinting();
+detectLocalStorageUsage();
+detectBrowserHijacking();

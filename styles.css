@@ -1,0 +1,137 @@
+/* General Styles */
+body {
+    width: 350px;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #adadad;
+    color: #333;
+}
+
+h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #0b35dc;
+}
+
+h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #0b35dc;
+}
+
+p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #1e3c3f;
+}
+
+/* Container for the Popup Content */
+#container {
+    max-width: 350px;
+    margin: auto;
+}
+
+/* Button Styles */
+button {
+    background-color: #0b35dc;
+    color: white;
+    border: none;
+    padding: 5px 2px; /* Reduce padding for smaller size */
+    font-size: 14px; /* Reduce font size */
+    cursor: pointer;
+    margin: 5px auto; /* Center the button horizontally */
+    border-radius: 10px;
+    display: block; /* Make the button behave like a block element */
+}
+
+button:hover {
+    background-color: #3556da;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;  /* Show above */
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Domain List Styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0;
+}
+
+ul li {
+    background-color: #f1f1f1;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+/* Privacy Score Styling */
+#privacy-score-section {
+    margin-top: 20px;
+}
+
+#privacy-score {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#progress-fill {
+    height: 10px;
+    width: 0; /* Initial state */
+    background-color: green;
+    border-radius: 5px;
+    transition: width 0.3s;
+}
+
+/* Responsive Styling */
+@media (max-width: 400px) {
+    body {
+        padding: 10px;
+    }
+
+    #container {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+}

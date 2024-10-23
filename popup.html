@@ -1,24 +1,65 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title>My Extension</title>
-    <style>
-      /* Add basic styling here if necessary */
-    </style>
-  </head>
-  <body>
-    <h1>Privacy Checker</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Guardian</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="container">
+        <!-- Title -->
+        <h1>Privacy Guardian</h1>
 
-    <p id="hijacking-status">Browser Hijacking: Not detected</p>
-    <p id="local-storage-status">Local Storage: Checking...</p>
-    <p id="cookie-data">Cookies: Loading...</p>
-    <p id="canvas-fingerprint-status">Canvas Fingerprinting: Checking...</p>
-    <p id="privacy-score">Privacy Score: Loading...</p>
-    <p id="third-party-connections">Third-Party Connections: Loading...</p> <!-- New element for third-party connections -->
+        <!-- Reload Button -->
+        <button id="reload-btn">Reload</button>
 
-    <button id="reload-btn">Reload</button>
+        <!-- Third-Party Connections -->
+        <div id="third-party-section">
+            <h2>Third-Party Connections <span class="tooltip">ℹ️<span class="tooltiptext">These are external domains the page connects to, which can track your activity.</span></span></h2>
+            <p>Number of connections: <span id="third-party-count">0</span></p>
+            <button id="show-domains-btn">Show Domains</button>
+            <ul id="domain-list" style="display: none;"></ul>
+        </div>
+
+        <!-- Browser Hijacking Detection -->
+        <div id="hijacking-section">
+            <h2>Browser Hijacking <span class="tooltip">ℹ️<span class="tooltiptext">This checks for malicious attempts to take control of your browser.</span></span></h2>
+            <p id="hijacking-status">No threats detected</p>
+        </div>
+
+        <!-- Local Storage Detection -->
+        <div id="local-storage-section">
+            <h2>Local Storage Usage <span class="tooltip">ℹ️<span class="tooltiptext">Local storage is data saved on your device by websites for future use.</span></span></h2>
+            <p id="local-storage-status">No data stored</p>
+        </div>
+
+        <!-- Cookies Detection -->
+        <div id="cookies-section">
+            <h2>Cookies <span class="tooltip">ℹ️<span class="tooltiptext">Cookies store information about your session and preferences, but can also be used to track you.</span></span></h2>
+            <p>First-Party Cookies: <span id="first-party-cookies">0</span></p>
+            <p>Third-Party Cookies: <span id="third-party-cookies">0</span></p>
+            <p>Session Cookies: <span id="session-cookies">0</span></p>
+            <p>Persistent Cookies: <span id="persistent-cookies">0</span></p>
+            <p>Supercookies: <span id="supercookies">0</span></p>
+        </div>
+
+        <!-- Canvas Fingerprinting Detection -->
+        <div id="canvas-section">
+            <h2>Canvas Fingerprinting <span class="tooltip">ℹ️<span class="tooltiptext">This checks if websites are using your browser's canvas to fingerprint you.</span></span></h2>
+            <p id="canvas-status">No fingerprinting detected</p>
+        </div>
+
+        <!-- Privacy Score -->
+        <div id="privacy-score-section">
+            <h2>Privacy Score</h2>
+            <div class="progress-bar" id="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <p id="privacy-score">Score: <span>100</span>/100</p>
+        </div>
+    </div>
 
     <script src="popup.js"></script>
-  </body>
+</body>
 </html>
